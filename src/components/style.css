@@ -1,0 +1,8 @@
+.question {
+  display: flex;
+  justify-content: center;
+}
+
+.question-item {
+  margin-right: 5px;
+}
