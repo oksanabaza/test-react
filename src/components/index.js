@@ -12,40 +12,114 @@ import image10 from "../assets/image10.jpeg";
 import image11 from "../assets/image11.jpeg";
 import image12 from "../assets/image12.jpeg";
 import Questions from "./questions";
-import Result from "./result";
-import SadResult from "./sad-result";
+import result1 from "../assets/result1.jpeg";
+import result2 from "../assets/result2.jpeg";
+import result3 from "../assets/result3.jpeg";
+import result4 from "../assets/result4.jpeg";
+import style from "./style.css";
 
 const data = [
   {
     id: 1,
-    title: "first title",
+    title: "Choose your bread:",
     itemArray: [
-      { label: "one", src: image1, value: "coffee", id: 1, active: false },
-      { label: "two", src: image2, value: "coffee", id: 2, active: false },
-      { label: "three", src: image3, value: "coffee", id: 3, active: false },
-      { label: "four", src: image4, value: "coffee", id: 4, active: false },
+      {
+        label: "one",
+        src: image1,
+        value: "White bread",
+        author: "Laura Ockel on Unsplash",
+        id: 1,
+        active: false,
+      },
+      {
+        label: "two",
+        src: image2,
+        value: "Wheat bread",
+        author: "Wesual Click on Unsplash",
+        id: 2,
+        active: false,
+      },
+      {
+        label: "three",
+        src: image3,
+        value: "Rye bread",
+        author: "Pradeep Javedar on Unsplash",
+        id: 3,
+        active: false,
+      },
+      {
+        label: "four",
+        src: image4,
+        value: "Sourdough bread",
+        author: "Monika Grabkowska on Unsplash",
+        id: 4,
+        active: false,
+      },
     ],
   },
   {
     id: 2,
-    title: "second title",
+    title: "Add-ons?",
     itemArray: [
-      { label: "five", src: image5, value: "coffee5", id: 5, active: false },
-      { label: "six", src: image6, value: "coffee6", id: 6, active: false },
-      { label: "seven", src: image7, value: "coffee7", id: 7, active: false },
-      { label: "eight", src: image8, value: "coffee8", id: 8, active: false },
+      {
+        label: "five",
+        src: image5,
+        value: "Apples",
+        author: "Estúdio Bloom on Unsplash",
+        id: 5,
+        active: false,
+      },
+      {
+        label: "six",
+        src: image6,
+        value: "Peanut butter",
+        author: "Olia Nayda on Unsplash",
+        id: 6,
+        active: false,
+      },
+      {
+        label: "seven",
+        src: image7,
+        value: "Lettuce",
+        author: "Nathan Dumlao on Unsplash",
+        id: 7,
+        active: false,
+      },
+      {
+        label: "eight",
+        src: image8,
+        value: "Tomatoes",
+        author: "Rodion Kutsaev on Unsplash",
+        id: 8,
+        active: false,
+      },
     ],
   },
   {
     id: 3,
-    title: "third title",
+    title: "Choose something else to add on",
     itemArray: [
-      { label: "nine", src: image9, id: 9, value: "coffee9", active: false },
-      { label: "ten", src: image10, id: 10, value: "coffee10", active: false },
+      {
+        label: "nine",
+        src: image9,
+        id: 9,
+        value: "Ham",
+        author: "Thought Catalog on Unsplash",
+        active: false,
+      },
+      {
+        label: "ten",
+        src: image10,
+        id: 10,
+        value: "Bacon",
+        author: "Wright Brand Bacon on Unsplash",
+        active: false,
+      },
       {
         label: "eleven",
         src: image11,
-        value: "coffee11",
+        value: "Salami",
+        author: "Wesual Click on Unsplash",
         id: 11,
         active: false,
       },
@@ -53,7 +127,8 @@ const data = [
         label: "twelve",
         src: image12,
         id: 12,
-        value: "coffee12",
+        value: "Turkey",
+        author: "Alison Marras on Unsplash",
         active: false,
       },
     ],
@@ -63,34 +138,8 @@ const data = [
 const MainComponent = () => {
   const [itemState, setItemState] = useState(data);
   const [open, setOpen] = useState(false);
-  const [happy, setHappy] = useState(
-    [
-      [data[0].itemArray[0]],
-      [data[1].itemArray[0]],
-      [data[2].itemArray[0]],
-    ].flat()
-  );
-  const [indifferent, setIndifferent] = useState(
-    [
-      [data[0].itemArray[1]],
-      [data[1].itemArray[1]],
-      [data[2].itemArray[1]],
-    ].flat()
-  );
-  const [sad, setSad] = useState(
-    [
-      [data[0].itemArray[2]],
-      [data[1].itemArray[2]],
-      [data[2].itemArray[2]],
-    ].flat()
-  );
-  const [cheerful, setCheerful] = useState(
-    [
-      [data[0].itemArray[3]],
-      [data[1].itemArray[3]],
-      [data[2].itemArray[3]],
-    ].flat()
-  );
+  const [v, setv] = useState("");
+  const [anchorEl, setAnchor] = useState(null);
 
   const changeActivities = (dataID) => (itemArrayID) => {
     const found = itemState.find((itemState) => {
@@ -104,19 +153,71 @@ const MainComponent = () => {
       }
     });
 
+    const newArr = itemState.map((itemArray) => {
+      return itemArray.itemArray.flat();
+    });
+    const newVal = newArr.flat().map((item) => {
+      if (item.active == true) {
+        return item.id;
+      }
+    });
+    const trueVal = newVal.filter((item) => item !== undefined);
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    setv(trueVal.reduce(reducer));
+
     setItemState([...itemState]);
   };
 
-  const happyMood = happy.filter((happy) => happy.active === true).length;
-  const indifferentMood = indifferent.filter(
-    (indifferent) => indifferent.active === true
-  ).length;
-  const sadMood = sad.filter((sad) => sad.active === true).length;
-  const cheerfulMood = cheerful.filter((cheerful) => cheerful.active === true)
-    .length;
+  let mood = "";
+  let content = "";
+  let src = "";
+  if (0 <= v && v <= 15) {
+    mood = <div>Your curiosity</div>;
+    content = (
+      <div>
+        Your best quality is your curiosity. You're always asking questions and
+        the first one to try new things. You're always down for a new adventure!
+      </div>
+    );
+    src = result1;
+  }
+  if (16 <= v && v <= 20) {
+    mood = <div>our generosity</div>;
+    content = (
+      <div>
+        Your best quality is your generosity. Without hesitation, you'll let
+        someone borrow one of your things and share your food. You enjoy giving
+        to others and haven’t mastered the art of saying "no" yet.
+      </div>
+    );
+    src = result2;
+  }
+  if (21 <= v && v <= 25) {
+    mood = <div>Your honesty</div>;
+    content = (
+      <div>
+        Your best quality is your honesty. You have a hard time lying to others,
+        and you're the one your friends and family always know they can trust.
+        You're the type to admit your mistakes.
+      </div>
+    );
+    src = result3;
+  }
+  if (26 <= v && v <= 30) {
+    mood = <div>Your supportive nature</div>;
+    content = (
+      <div>
+        The best thing about you is that you're supportive. You’re the first
+        person to go and help friends, and you always lend a shoulder to cry on.
+        You're an attentive listener and good at giving advice.
+      </div>
+    );
+    src = result4;
+  }
+
   return (
     <>
-      <div>
+      <div className="wrapper">
         {data.map((element) => {
           return (
             <div key={element.id}>
@@ -127,23 +228,26 @@ const MainComponent = () => {
             </div>
           );
         })}
-      </div>
-      <div>
-        <button onClick={() => setOpen(true)}>SUBMIT</button>
-        {open && (
-          <div>
-            {happyMood == "3" ? <div>happy</div> : null}
-            {indifferentMood == "3" ? <div>indifferent</div> : null}
-            {sadMood == "3" ? <div>sad</div> : null}
-            {cheerfulMood == "3" ? <div>cheerful</div> : null}
-            {
-              (happyMood,
-              indifferentMood,
-              sadMood,
-              cheerfulMood == "1" ? <div>hmm....that's interesting</div> : null)
-            }
-          </div>
-        )}
+
+        <div>
+          {!open && <button onClick={() => setOpen(true)}>SUBMIT</button>}
+          {open && (
+            <div className="result">
+              <div className="header">
+                Make Your Dream Grilled Cheese And We'll Reveal Your Absolute
+                Best Quality
+              </div>
+              <div className="content">
+                <div className="content-header">{mood}</div>
+                <div className="content-text">{content}</div>
+                <div className="content-image">
+                  <img src={src} />
+                </div>
+              </div>
+              <div className="footer"></div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
